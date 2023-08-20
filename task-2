@@ -1,0 +1,43 @@
+import requests
+import json
+
+# Create a new project
+
+project_data = {
+    "name": "My Project",
+    "description": "This is my project description",
+    "tasks": [
+        {
+            "name": "Task 1",
+            "description": "This is the description of task 1",
+            "assigned_to": "Me",
+            "due_date": "2023-03-08",
+        },
+        {
+            "name": "Task 2",
+            "description": "This is the description of task 2",
+            "assigned_to": "Someone else",
+            "due_date": "2023-03-15",
+        },
+    ]
+}
+
+response = requests.post("https://api.projectmanagementtool.com/projects", data=json.dumps(project_data))
+
+# Get the project ID
+
+project_id = response.json()["id"]
+
+# Get the list of tasks for the project
+
+response = requests.get("https://api.projectmanagementtool.com/projects/{}/tasks".format(project_id))
+
+tasks = response.json()["tasks"]
+
+# Print the list of tasks
+
+for task in tasks:
+    print(task["name"])
+    print(task["description"])
+    print(task["assigned_to"])
+    print(task["due_date"])
